@@ -59,12 +59,11 @@ object CurriedComputation extends App with Data {
   * Допишите реализации методов так, что бы результат совпадал с предыдущими.
   */
 object FunctionalComputation extends App with Data {
-
+  val filterArray = filterData.split(" ");
   def functionalComputation(filterData: String): (Array[String]) => Array[String] = {
     (dataProducer: Array[String]) => {
       //EMULATE HEAVY LOAD
       Thread.sleep(10)
-      val filterArray = filterData.split(" ");
       //EMULATE HEAVY LOAD
       Thread.sleep(100)
       dataProducer.filter(dataItem => filterArray.contains(dataItem))
