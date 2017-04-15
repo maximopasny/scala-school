@@ -3,8 +3,7 @@ package lectures.functions
 /**
   *
   * В объекте 'Computation' в методе computation сравниваются 2 массива.
-  * Результатом сравнения будет массив, содержащий слова, принадлежащие обоим массивам
-  * В данном случа результатом будет массив, содержащий 2 элемента Array("Клара", "Карла")
+  * Результатом метода будет массив, содержащий 2 элемента Array("Клара", "Карла")
   *
   * С помощью Thread.sleep имитируеться прододжительное вычисление
   */
@@ -41,25 +40,41 @@ object Computation extends App with Data {
   */
 object CurriedComputation extends App with Data {
 
-  def curriedComputation(filterData: String)(dataProducer: Array[String]): Array[String] = ???
+  def curriedComputation(filterData: String)(dataProducer: Array[String]): Array[String] = {
+    //EMULATE HEAVY LOAD
+    Thread.sleep(10)
+    val filterArray = filterData.split(" ");
+    //EMULATE HEAVY LOAD
+    Thread.sleep(100)
+    dataProducer.filter(dataItem => filterArray.contains(dataItem))
+  }
 
-  val partiallyAppliedCurriedFunction = ???
+  val partiallyAppliedCurriedFunction = curriedComputation(filterData)_
 
-  //val result = partiallyAppliedCurriedFunction(dataArray)
-  //result.foreach(println)
+  val result = partiallyAppliedCurriedFunction(dataArray)
+  result.foreach(print)
 }
 
 /**
   * Допишите реализации методов так, что бы результат совпадал с предыдущими.
-  *
-  * При этом постарайтесь минимизировать количество разбиений строки filterData на отдельные слова.
   */
 object FunctionalComputation extends App with Data {
+  val filterArray = filterData.split(" ");
+  def functionalComputation(filterData: String): (Array[String]) => Array[String] = {
+    (dataProducer: Array[String]) => {
+      //EMULATE HEAVY LOAD
+      Thread.sleep(10)
+      //EMULATE HEAVY LOAD
+      Thread.sleep(100)
+      dataProducer.filter(dataItem => filterArray.contains(dataItem))
+    }
+  }
 
-  def functionalComputation(filterData: String): (Array[String]) => Array[String] = ???
+  val filterApplied = functionalComputation(filterData)
 
-  val filterApplied = functionalComputation(???)
-
-  val result = filterApplied(???)
-  result.foreach(println)
+  val result = filterApplied(dataArray)
+  result.foreach(print)
 }
+
+
+
