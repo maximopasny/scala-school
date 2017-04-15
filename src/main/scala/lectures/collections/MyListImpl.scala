@@ -22,11 +22,18 @@ object MyListImpl extends App {
     def flatMap(f: (Int => MyList)) =
       MyList(data.flatMap(inp => f(inp).data))
 
-    def map(f: ???) = ???
+    def map(f: (Int => Int)) = {
+      flatMap(elem => MyList(List(f(elem))))
+    }
 
-    def foldLeft(acc: Int)(???): Int = ???
+    def foldLeft(acc: Int)(f: Tuple2[Int, Int] => Int): Int = data match {
+      case Nil => acc
+      case head::tail => MyList(tail).foldLeft(f(acc, head))(f)
+    }
 
-    def filter(???) = ???
+    def filter(f: Int => Boolean) = {
+      flatMap(elem => if (f(elem)) MyList(List(elem)) else MyList(List()))
+    }
   }
 
   require(MyList(List(1, 2, 3, 4, 5, 6)).map(_ * 2).data == List(2, 4, 6, 8, 10, 12))
